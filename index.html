@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#244b43">
+<meta name="description" content="وَرَقي — مفكرتك الرقمية للكتابة والرسم وتنظيم أفكارك">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>وَرَقي | مفكرتك الرقمية</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark">✦</div><div><b>وَرَقي</b><small>مساحة أفكارك</small></div></div>
+    <button class="nav-item active" data-view="home">⌂ <span>الرئيسية</span></button>
+    <button class="nav-item" data-view="notes">▤ <span>كل الملاحظات</span></button>
+    <button class="nav-item" data-view="templates">▧ <span>القوالب</span></button>
+    <div class="side-label">مساحاتك</div>
+    <button class="nav-item" data-filter="الدراسة">📚 <span>الدراسة</span></button>
+    <button class="nav-item" data-filter="أفكاري">💡 <span>أفكاري</span></button>
+    <button class="nav-item" data-filter="اليوميات">☀ <span>اليوميات</span></button>
+    <div class="sidebar-bottom">
+      <button class="nav-item" id="backupBtn">⇧ <span>نسخة احتياطية</span></button>
+      <button class="nav-item" id="importBackupBtn">⇩ <span>استيراد نسخة</span></button>
+      <small>يتم حفظ ملاحظاتك على هذا الجهاز</small>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" id="menuBtn" aria-label="القائمة">☰</button>
+      <div class="crumb" id="crumb">مساحة هادئة لأفكارك</div>
+      <div class="top-actions">
+        <label class="search"><span>⌕</span><input id="searchInput" placeholder="ابحث في ملاحظاتك..."></label>
+        <button class="icon-btn" id="themeBtn" title="تبديل المظهر">☼</button>
+        <button class="primary-btn" id="newNoteBtn">＋ ملاحظة جديدة</button>
+      </div>
+    </header>
+
+    <section class="view" id="homeView">
+      <div class="welcome">
+        <div><span class="eyebrow">مساحتك الخاصة</span><h1>أهلاً بك في وَرَقي <span>✦</span></h1>
+        <p>اكتب، ارسم، رتّب أفكارك… وخلي كل حاجة في مكانها.</p>
+        <button class="primary-btn" id="welcomeNewBtn">＋ ابدأ ملاحظة جديدة</button></div>
+        <div class="welcome-art"><div class="sun"></div><div class="hill hill-a"></div><div class="hill hill-b"></div><div class="floating-note">✎<small>فكرة جديدة؟</small></div></div>
+      </div>
+      <div class="stats">
+        <div class="stat-card"><span>إجمالي ملاحظاتك</span><b id="totalCount">0</b><i>▤</i></div>
+        <div class="stat-card"><span>دفاتر نشطة</span><b>3</b><i>▣</i></div>
+        <div class="stat-card"><span>آخر تحديث</span><b id="lastUpdated">—</b><i>◷</i></div>
+      </div>
+      <div class="section-heading"><div><h2>ابدأ من هنا</h2><p>اختار الطريقة اللي تناسب فكرتك</p></div></div>
+      <div class="quick-grid">
+        <button class="quick-card" data-create="blank"><span class="quick-icon mint">✎</span><b>صفحة فارغة</b><small>اكتب وارسم براحتك</small></button>
+        <button class="quick-card" data-create="lined"><span class="quick-icon blue">☷</span><b>ملاحظات مسطرة</b><small>للدراسة والتلخيص</small></button>
+        <button class="quick-card" data-create="planner"><span class="quick-icon peach">▦</span><b>مخطط أسبوعي</b><small>رتّب أسبوعك ومهامك</small></button>
+        <button class="quick-card" data-create="ideas"><span class="quick-icon lilac">✧</span><b>دفتر أفكار</b><small>اجمع أفكارك ورسوماتك</small></button>
+      </div>
+      <div class="section-heading"><div><h2>ملاحظاتك الأخيرة</h2><p>كل أفكارك قريبة منك</p></div><button class="text-btn" data-view="notes">عرض الكل ←</button></div>
+      <div class="notes-grid" id="recentGrid"></div>
+    </section>
+
+    <section class="view hidden" id="notesView">
+      <div class="page-title"><div><h1>كل الملاحظات</h1><p>دفاترك وملاحظاتك في مكان واحد</p></div><button class="primary-btn" id="notesNewBtn">＋ ملاحظة جديدة</button></div>
+      <div class="filter-row"><button class="filter-chip selected" data-category="الكل">الكل</button><button class="filter-chip" data-category="الدراسة">الدراسة</button><button class="filter-chip" data-category="أفكاري">أفكاري</button><button class="filter-chip" data-category="اليوميات">اليوميات</button></div>
+      <div class="notes-grid" id="allNotesGrid"></div>
+      <div class="empty hidden" id="emptyState">لسه مفيش ملاحظات هنا. ابدأ بأول فكرة ليك ✨</div>
+    </section>
+
+    <section class="view hidden" id="templatesView">
+      <div class="page-title"><div><h1>قوالب جاهزة</h1><p>اختار قالب وابدأ من غير ما تضيع وقت في التنسيق</p></div></div>
+      <div class="template-grid">
+        <button class="template-card" data-create="lined"><div class="paper-preview ruled">ملاحظاتي<br>ــــــــــــــــ<br>ــــــــــــــــ<br>ــــــــــــــــ</div><b>ورقة مسطرة</b><small>للكتابة والتلخيص</small></button>
+        <button class="template-card" data-create="blank"><div class="paper-preview blank">✎</div><b>ورقة بيضاء</b><small>للرسم والكتابة الحرة</small></button>
+        <button class="template-card" data-create="planner"><div class="paper-preview planner-preview">الأسبوع<br>□ □ □<br>□ □ □</div><b>مخطط أسبوعي</b><small>أهداف ومهام الأسبوع</small></button>
+        <button class="template-card" data-create="meeting"><div class="paper-preview meeting-preview">عنوان الاجتماع<br>النقاط المهمة<br>القرارات</div><b>محضر اجتماع</b><small>ملاحظات وقرارات</small></button>
+        <button class="template-card" data-create="ideas"><div class="paper-preview idea-preview">فكرة ✧<br>لماذا؟<br>كيف؟</div><b>دفتر أفكار</b><small>رتّب الفكرة خطوة بخطوة</small></button>
+        <button class="template-card" data-create="study"><div class="paper-preview study-preview">الموضوع<br>ملخص الدرس<br>مراجعة</div><b>ملخص درس</b><small>للمذاكرة والمراجعة</small></button>
+      </div>
+    </section>
+
+    <section class="view hidden" id="editorView">
+      <div class="editor-top">
+        <button class="back-btn" id="backBtn">← رجوع</button>
+        <input id="noteTitle" class="title-input" placeholder="عنوان الملاحظة...">
+        <div class="editor-actions"><span id="saveStatus">محفوظ</span><button class="icon-btn" id="exportPdfBtn" title="تصدير PDF">PDF</button><button class="icon-btn" id="deleteNoteBtn" title="حذف">⌫</button><button class="primary-btn" id="doneBtn">تم</button></div>
+      </div>
+      <div class="editor-meta"><select id="categorySelect"><option>الدراسة</option><option>أفكاري</option><option>اليوميات</option></select><span id="noteDate"></span><button class="text-btn" id="addImageBtn">＋ صورة</button><button class="text-btn" id="addPdfBtn">＋ PDF</button><input type="file" id="imageInput" accept="image/*" hidden><input type="file" id="pdfInput" accept="application/pdf" hidden></div>
+      <div class="toolbar">
+        <button class="tool active" data-tool="pen" title="قلم">✎ <small>قلم</small></button>
+        <button class="tool" data-tool="highlighter" title="قلم تمييز">▰ <small>تمييز</small></button>
+        <button class="tool" data-tool="eraser" title="ممحاة">◩ <small>ممحاة</small></button>
+        <span class="tool-separator"></span>
+        <label class="color-wrap" title="لون القلم"><input type="color" id="penColor" value="#244b43"></label>
+        <select id="penSize" aria-label="سمك القلم"><option value="2">رفيع</option><option value="4" selected>متوسط</option><option value="7">عريض</option><option value="12">سميك</option></select>
+        <span class="tool-separator"></span>
+        <button class="tool" id="undoBtn" title="تراجع">↶</button><button class="tool" id="clearDrawBtn" title="مسح الرسم">مسح الرسم</button>
+        <span class="tool-separator"></span>
+        <button class="tool" id="templateToggle">شكل الورقة ▾</button>
+      </div>
+      <div class="paper-wrap" id="paperWrap">
+        <div class="paper" id="paper">
+          <div class="attachments" id="attachments"></div>
+          <textarea id="noteText" placeholder="اكتب أفكارك هنا... أو استخدم القلم للرسم والكتابة الحرة ✨"></textarea>
+          <canvas id="drawCanvas"></canvas>
+        </div>
+      </div>
+      <div class="editor-footer"><span>✦ أفكارك محفوظة على جهازك تلقائياً</span><span>تقدر تستخدم القلم أو الكيبورد</span></div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop hidden" id="templateModal"><div class="modal"><button class="modal-close" id="closeTemplate">×</button><h3>شكل الورقة</h3><p>اختار الخلفية المناسبة لملاحظتك</p><div class="paper-options"><button data-paper="plain">بيضاء</button><button data-paper="lined">مسطرة</button><button data-paper="grid">مربعات</button><button data-paper="dots">نقط</button></div></div></div>
+<script src="app.js"></script>
+</body></html>
