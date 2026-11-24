@@ -79,6 +79,10 @@
         <button class="template-card" data-create="meeting"><div class="paper-preview meeting-preview">عنوان الاجتماع<br>النقاط المهمة<br>القرارات</div><b>محضر اجتماع</b><small>ملاحظات وقرارات</small></button>
         <button class="template-card" data-create="ideas"><div class="paper-preview idea-preview">فكرة ✧<br>لماذا؟<br>كيف؟</div><b>دفتر أفكار</b><small>رتّب الفكرة خطوة بخطوة</small></button>
         <button class="template-card" data-create="study"><div class="paper-preview study-preview">الموضوع<br>ملخص الدرس<br>مراجعة</div><b>ملخص درس</b><small>للمذاكرة والمراجعة</small></button>
+        <button class="template-card" data-create="cornell"><div class="paper-preview" style="background:linear-gradient(90deg,#fffefa 69%,#f7e8e5 69%);">ملاحظات الدرس<br>الفكرة الرئيسية<br>ملخص</div><b>قالب كورنيل</b><small>للمذاكرة وتثبيت المعلومات</small></button>
+        <button class="template-card" data-create="music"><div class="paper-preview ruled">♫ ─────────<br>♫ ─────────<br>♫ ─────────</div><b>نوتة موسيقية</b><small>للتدوين الموسيقي</small></button>
+        <button class="template-card" data-create="dots"><div class="paper-preview idea-preview">• • • • •<br>• • • • •<br>• • • • •</div><b>دفتر نقط</b><small>للرسم والتخطيط الحر</small></button>
+        <button class="template-card" data-create="isometric"><div class="paper-preview study-preview">◇ ◇ ◇<br>◇ ◇ ◇<br>◇ ◇ ◇</div><b>شبكة هندسية</b><small>للمخططات والرسومات</small></button>
       </div>
     </section>
 
@@ -88,19 +92,23 @@
         <input id="noteTitle" class="title-input" placeholder="عنوان الملاحظة...">
         <div class="editor-actions"><span id="saveStatus">محفوظ</span><button class="icon-btn" id="exportPdfBtn" title="تصدير PDF">PDF</button><button class="icon-btn" id="deleteNoteBtn" title="حذف">⌫</button><button class="primary-btn" id="doneBtn">تم</button></div>
       </div>
-      <div class="editor-meta"><select id="categorySelect"><option>الدراسة</option><option>أفكاري</option><option>اليوميات</option></select><span id="noteDate"></span><button class="text-btn" id="addImageBtn">＋ صورة</button><button class="text-btn" id="addPdfBtn">＋ PDF</button><input type="file" id="imageInput" accept="image/*" hidden><input type="file" id="pdfInput" accept="application/pdf" hidden></div>
+      <div class="editor-meta"><label>المجلد <input id="folderName" class="folder-input" value="مجلدي" maxlength="32"></label><input id="folderColor" type="color" value="#83a88f" title="لون المجلد"><select id="categorySelect"><option>الدراسة</option><option>أفكاري</option><option>اليوميات</option></select><span id="noteDate"></span><button class="text-btn" id="addImageBtn">＋ صورة</button><button class="text-btn" id="addPdfBtn">＋ PDF</button><input type="file" id="imageInput" accept="image/*" hidden><input type="file" id="pdfInput" accept="application/pdf" hidden></div>
       <div class="toolbar">
         <button class="tool active" data-tool="pen" title="قلم">✎ <small>قلم</small></button>
-        <button class="tool" data-tool="highlighter" title="قلم تمييز">▰ <small>تمييز</small></button>
+        <button class="tool" data-tool="highlighter" title="قلم تمييز">🖍️ <small>تمييز</small></button>
+        <button class="tool" data-tool="calligraphy" title="قلم خط عربي">✒️ <small>رقعة / خط</small></button>
+        <button class="tool" data-tool="brush" title="فرشاة ناعمة">🖌️ <small>فرشاة</small></button>
         <button class="tool" data-tool="eraser" title="ممحاة">◩ <small>ممحاة</small></button>
         <span class="tool-separator"></span>
         <label class="color-wrap" title="لون القلم"><input type="color" id="penColor" value="#244b43"></label>
         <select id="penSize" aria-label="سمك القلم"><option value="2">رفيع</option><option value="4" selected>متوسط</option><option value="7">عريض</option><option value="12">سميك</option></select>
         <span class="tool-separator"></span>
-        <button class="tool" id="undoBtn" title="تراجع">↶</button><button class="tool" id="clearDrawBtn" title="مسح الرسم">مسح الرسم</button>
+        <button class="tool" id="undoBtn" title="تراجع">↶ <small>تراجع</small></button><button class="tool" id="redoBtn" title="إعادة">↷ <small>إعادة</small></button><button class="tool" id="clearDrawBtn" title="مسح الرسم كله">مسح الكل</button>
         <span class="tool-separator"></span>
-        <button class="tool" id="templateToggle">شكل الورقة ▾</button>
+        <button class="tool" id="templateToggle">القوالب ▾</button><button class="tool" id="rulerBtn" title="إظهار المسطرة">📏 <small>مسطرة</small></button><button class="tool" id="shapeBtn" title="إضافة شكل">◇ <small>شكل</small></button>
       </div>
+      <div class="page-controls"><button class="icon-btn" id="prevPageBtn">السابق</button><span id="pageIndicator">صفحة 1 من 1</span><button class="primary-btn" id="addPageBtn">＋ صفحة جديدة</button><button class="icon-btn" id="nextPageBtn">التالي</button></div>
+      <div class="zoom-hint">كبّر وصغّر بإصبعين على الهاتف أو بعجلة الماوس مع Ctrl، واسحب للتنقل</div>
       <div class="paper-wrap" id="paperWrap">
         <div class="paper" id="paper">
           <div class="attachments" id="attachments"></div>
@@ -113,6 +121,8 @@
   </main>
 </div>
 <div class="toast" id="toast"></div>
-<div class="modal-backdrop hidden" id="templateModal"><div class="modal"><button class="modal-close" id="closeTemplate">×</button><h3>شكل الورقة</h3><p>اختار الخلفية المناسبة لملاحظتك</p><div class="paper-options"><button data-paper="plain">بيضاء</button><button data-paper="lined">مسطرة</button><button data-paper="grid">مربعات</button><button data-paper="dots">نقط</button></div></div></div>
+<div class="modal-backdrop hidden" id="templateModal"><div class="modal"><button class="modal-close" id="closeTemplate">×</button><h3>شكل الورقة</h3><p>اختار الخلفية المناسبة لملاحظتك</p><div class="paper-options"><button data-paper="plain">بيضاء</button><button data-paper="lined">مسطرة</button><button data-paper="grid">مربعات</button><button data-paper="dots">نقط</button><button data-paper="planner">مخطط</button><button data-paper="cornell">كور넬</button><button data-paper="music">نوتة موسيقية</button><button data-paper="isometric">شبكة هندسية</button></div></div></div>
+<div class="modal-backdrop hidden" id="setupModal"><div class="modal"><button class="modal-close" id="closeSetup">×</button><h3>جهّز دفترَك</h3><p>اختار المجلد والقالب والألوان قبل ما تبدأ</p><label class="setup-label">اسم المجلد<input id="setupFolder" value="مجلدي" maxlength="32"></label><label class="setup-label">لون المجلد<input id="setupFolderColor" type="color" value="#83a88f"></label><label class="setup-label">القالب<select id="setupTemplate"><option value="plain">ورقة بيضاء</option><option value="lined">مسطرة</option><option value="grid">مربعات</option><option value="dots">نقط</option><option value="planner">مخطط</option><option value="cornell">كور넬</option><option value="music">نوتة موسيقية</option><option value="isometric">شبكة هندسية</option></select></label><label class="setup-label">لون خلفية الورقة<input id="setupPaperColor" type="color" value="#fffefa"></label><button class="primary-btn" id="confirmSetup">ابدأ الكتابة</button></div></div>
+<div class="modal-backdrop hidden" id="shapeModal"><div class="modal"><button class="modal-close" id="closeShape">×</button><h3>إضافة شكل</h3><p>اختر عنصرًا لإضافته إلى الصفحة</p><div class="paper-options"><button data-shape="line">خط</button><button data-shape="rect">مستطيل</button><button data-shape="circle">دائرة</button><button data-shape="arrow">سهم</button></div></div></div>
 <script src="app.js"></script>
 </body></html>
