@@ -47,30 +47,7 @@ $('#redoBtn').onclick=()=>{let d=redoHistory.pop();if(!d)return;drawHistory.push
 $('#shapeBtn').onclick=()=>$('#shapeModal').classList.remove('hidden');$('#closeShape').onclick=()=>$('#shapeModal').classList.add('hidden');
 $$('[data-shape]').forEach(b=>b.onclick=()=>{let w=canvas.width/(devicePixelRatio||1),h=canvas.height/(devicePixelRatio||1);ctx.save();ctx.strokeStyle=$('#penColor').value;ctx.lineWidth=+$('#penSize').value;ctx.beginPath();if(b.dataset.shape==='circle')ctx.arc(w/2,h/2,65,0,Math.PI*2);else if(b.dataset.shape==='rect')ctx.strokeRect(w/2-90,h/2-55,180,110);else{ctx.moveTo(w/2-100,h/2);ctx.lineTo(w/2+100,h/2);if(b.dataset.shape==='arrow'){ctx.moveTo(w/2+65,h/2-25);ctx.lineTo(w/2+100,h/2);ctx.lineTo(w/2+65,h/2+25)}}ctx.stroke();ctx.restore();$('#shapeModal').classList.add('hidden');saveCurrent()});
 $('#rulerBtn').onclick=()=>{let p=$('#paper');p.classList.toggle('show-ruler');toast(p.classList.contains('show-ruler')?'تم إظهار المسطرة':'تم إخفاء المسطرة')};
-$$('.tool[data-tool]').forEach(b=>b.onclick=()=>{activeTool=b.dataset.tool;let touchPoints=new Map(),pinchStart=null,spaceDown=false,panPointer=null;
-window.addEventListener('keydown',e=>{if(e.code==='Space'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){spaceDown=true;e.preventDefault()}});
-window.addEventListener('keyup',e=>{if(e.code==='Space')spaceDown=false});
-$('#paperWrap').addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&(e.button===1||spaceDown)){panPointer={id:e.pointerId,x:e.clientX,y:e.clientY};drawing=false;$('#paperWrap').setPointerCapture(e.pointerId);e.preventDefault();e.stopPropagation()}},true);
-$('#paperWrap').addEventListener('pointermove',e=>{if(!panPointer||panPointer.id!==e.pointerId)return;pan.x+=e.clientX-panPointer.x;pan.y+=e.clientY-panPointer.y;panPointer.x=e.clientX;panPointer.y=e.clientY;applyZoom()});
-function stopPan(e){if(panPointer&&panPointer.id===e.pointerId)panPointer=null}
-$('#paperWrap').addEventListener('pointerup',stopPan);$('#paperWrap').addEventListener('pointercancel',stopPan);
-
-function applyZoom(){let paper=$('#paper');paper.style.transform=`translate(${pan.x}px,${pan.y}px) scale(${zoom})`;paper.style.transformOrigin='top center';$('#paperWrap').style.minHeight=Math.max(520,750*zoom)+'px'}
-function setZoomAt(next,x,y){let old=zoom;next=Math.max(.45,Math.min(3.2,next));if(next===old)return;let r=$('#paper').getBoundingClientRect(),localX=x-r.left,localY=y-r.top;zoom=next;pan.x+=(localX/old-localX/next);pan.y+=(localY/old-localY/next);applyZoom()}
-$('#paperWrap').addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();setZoomAt(zoom*(e.deltaY<0?1.12:.89),e.clientX,e.clientY)}},{passive:false});
-$('#paperWrap').addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')return;touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touchPoints.size===2){drawing=false;let a=[...touchPoints.values()];pinchStart={dist:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),zoom,x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2}}},true);
-$('#paperWrap').addEventListener('pointermove',e=>{if(!touchPoints.has(e.pointerId))return;touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touchPoints.size>=2&&pinchStart){let a=[...touchPoints.values()];let d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);setZoomAt(pinchStart.zoom*d/pinchStart.dist,(a[0].x+a[1].x)/2,(a[0].y+a[1].y)/2)}});
-function clearTouch(e){touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinchStart=null}
-$('#paperWrap').addEventListener('pointerup',clearTouch);$('#paperWrap').addEventListener('pointercancel',clearTouch);
-$('#addPageBtn').onclick=()=>{saveCurrent();current.pages.push({text:'',drawing:'',paper:paperStyle,attachments:[]});currentPage=current.pages.length-1;loadPage();persist();toast('تمت إضافة صفحة جديدة')};
-$('#prevPageBtn').onclick=()=>{if(currentPage>0){saveCurrent();currentPage--;loadPage()}};
-$('#nextPageBtn').onclick=()=>{if(currentPage<current.pages.length-1){saveCurrent();currentPage++;loadPage()}};
-$('#folderName').oninput=saveCurrent;$('#folderColor').onchange=saveCurrent;
-$('#redoBtn').onclick=()=>{let d=redoHistory.pop();if(!d)return;drawHistory.push(canvas.toDataURL());let im=new Image();im.onload=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.width,canvas.height);saveCurrent()};im.src=d};
-$('#shapeBtn').onclick=()=>$('#shapeModal').classList.remove('hidden');$('#closeShape').onclick=()=>$('#shapeModal').classList.add('hidden');
-$$('[data-shape]').forEach(b=>b.onclick=()=>{let w=canvas.width/(devicePixelRatio||1),h=canvas.height/(devicePixelRatio||1);ctx.save();ctx.strokeStyle=$('#penColor').value;ctx.lineWidth=+$('#penSize').value;ctx.beginPath();if(b.dataset.shape==='circle')ctx.arc(w/2,h/2,65,0,Math.PI*2);else if(b.dataset.shape==='rect')ctx.strokeRect(w/2-90,h/2-55,180,110);else{ctx.moveTo(w/2-100,h/2);ctx.lineTo(w/2+100,h/2);if(b.dataset.shape==='arrow'){ctx.moveTo(w/2+65,h/2-25);ctx.lineTo(w/2+100,h/2);ctx.lineTo(w/2+65,h/2+25)}}ctx.stroke();ctx.restore();$('#shapeModal').classList.add('hidden');saveCurrent()});
-$('#rulerBtn').onclick=()=>{let p=$('#paper');p.classList.toggle('show-ruler');toast(p.classList.contains('show-ruler')?'تم إظهار المسطرة':'تم إخفاء المسطرة')};
-$$('.tool[data-tool]').forEach(x=>x.classList.toggle('active',x===b))});
+$$('.tool[data-tool]').forEach(b=>b.onclick=()=>{activeTool=b.dataset.tool;$$('.tool[data-tool]').forEach(x=>x.classList.toggle('active',x===b))});
 $('#undoBtn').onclick=()=>{let d=drawHistory.pop();if(!d)return;redoHistory.push(canvas.toDataURL());let im=new Image();im.onload=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.width,canvas.height);saveCurrent()};im.src=d};
 $('#clearDrawBtn').onclick=()=>{if(confirm('تمسح كل الرسم الموجود في الصفحة؟')){ctx.clearRect(0,0,canvas.width,canvas.height);saveCurrent()}};
 $$('[data-view]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
